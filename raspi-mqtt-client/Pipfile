@@ -1,0 +1,13 @@
+[[source]]
+verify_ssl = true
+name = "pypi"
+url = "https://pypi.org/simple"
+
+[packages]
+paho-mqtt = "*"
+fitbit = "*"
+
+[requires]
+python_version = "3.7"
+
+[dev-packages]
