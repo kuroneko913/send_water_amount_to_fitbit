@@ -1,0 +1,2 @@
+# send_water_amount_to_fitbit
+飲んだ水の量をFitbitAPIで連携して記録するシステム。
