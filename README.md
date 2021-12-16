@@ -5,6 +5,14 @@
 
 M5Stack側にwater_weight.inoを書き込む。(WiFiの設定を追加して)
 
+ここら辺を参考に、ロードセル(hx711)とM5Stackを接続する。
+https://eguchi.jp/blog/?p=1268
+
+| hx711 | M5Stack |
+| -- | --- |
+| SCK   | 26      |
+| DT    | 36      |
+
 RaspberryPi3にraspi-mqtt-client/以下を配置する。
 
 paho-mqtt
