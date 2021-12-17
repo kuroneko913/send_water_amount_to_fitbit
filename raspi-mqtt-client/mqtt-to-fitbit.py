@@ -72,7 +72,7 @@ def save_tokens(tokens):
 
 def call_api(tokens ,value):
     client = fitbit.Fitbit(CLIENT_ID, CLIENT_SECRET, tokens['access_token'], tokens['refresh_token'])
-    url = url = "{0}/{1}/user/-/foods/log/water.json".format(*client._get_common_args())
+    url = "{0}/{1}/user/-/foods/log/water.json".format(*client._get_common_args())
     data = {
         'amount' : value['water_weight'],
         'unit' : 'ml',
