@@ -1,3 +1,4 @@
 *.log
 nohup.out
 tokens.json
+config.py

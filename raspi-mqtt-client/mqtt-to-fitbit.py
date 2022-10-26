@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 
 from requests.api import request
 import logging
+import config
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -21,9 +22,9 @@ broker = 'localhost'
 port = 1883
 topic = '/pub/M5Stack'
 
-CLIENT_ID = "2382LR"
-CLIENT_SECRET = "a3b5bb793c54eb6c4a707566537af86a"
-REFRESH_TOKEN = "e6c4422ea7fcda95c94638779df13a3ffca83fc9bd020ba09739d39c1b912869"
+CLIENT_ID = config.CLIENT_ID
+CLIENT_SECRET = config.CLIENT_SECRET
+REFRESH_TOKEN = config.REFRESH_TOKEN
 
 def on_connect(client, userdata, flag, rc):
     logger.info(f"Connected with result code: {rc}")
@@ -80,7 +81,7 @@ def save_tokens(tokens):
   
 def call_api(tokens ,value):
     client = fitbit.Fitbit(CLIENT_ID, CLIENT_SECRET, tokens['access_token'], tokens['refresh_token'])
-    url = url = "{0}/{1}/user/-/foods/log/water.json".format(*client._get_common_args())
+    url = "{0}/{1}/user/-/foods/log/water.json".format(*client._get_common_args())
     data = {
         'amount' : value['water_weight'],
         'unit' : 'ml',
