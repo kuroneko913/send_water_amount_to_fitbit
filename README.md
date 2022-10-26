@@ -45,3 +45,12 @@ Received message 'b'{"water_weight": 49}'' on topic '/pub/M5Stack' with QoS 0
 
 Fitbitのダッシュボードから飲んだ水の量が連携されていることを確認できる。
 ![IMG_AADC7844C77A-1](https://user-images.githubusercontent.com/20674685/146418922-078b0105-b0af-4e6e-8832-86f3d01b1d50.jpeg)
+
+ロガーを追加し、ログファイルに記録が残るようにした。
+
+```
+2022-10-27 03:25:16,410     INFO Connected with result code: 0
+2022-10-27 03:26:08,397     INFO Received message 'b'{"water_weight": 90}'' on topic '/pub/M5Stack' with QoS 0
+2022-10-27 03:26:09,212     INFO {'amount': 90, 'unit': 'ml', 'date': '2022-10-27'}
+2022-10-27 03:26:09,213     INFO {'waterLog': {'amount': 90, 'logId': 9321830478}}
+```
