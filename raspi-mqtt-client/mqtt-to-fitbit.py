@@ -1,34 +1,43 @@
-# mosquitto がインストールされていることが前提。
+# python
+from oauthlib.oauth2.rfc6749.clients import base
 from paho.mqtt import client as mqtt_client
 import fitbit
 import json
 import os
 import requests
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+
+from requests.api import request
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler('send_water.log')
+handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)8s %(message)s"))
+logger.addHandler(handler)
 
 broker = 'localhost'
 port = 1883
 topic = '/pub/M5Stack'
 
-# https://dev.fitbit.com/apps
-CLIENT_ID = "fitbit-app-client-id"
-CLIENT_SECRET = "fitbit-app-client-secret"
-REFRESH_TOKEN = "refresh-token"
+CLIENT_ID = "2382LR"
+CLIENT_SECRET = "a3b5bb793c54eb6c4a707566537af86a"
+REFRESH_TOKEN = "e6c4422ea7fcda95c94638779df13a3ffca83fc9bd020ba09739d39c1b912869"
 
 def on_connect(client, userdata, flag, rc):
-    print(f"Connected with result code: {rc}")
+    logger.info(f"Connected with result code: {rc}")
     client.subscribe(topic)
 
 # ブローカーが切断したときの処理
 def on_disconnect(client, userdata, flag, rc):
   if  rc != 0:
-    print("Unexpected disconnection.")
+    logger.info("Unexpected disconnection.")
 
 # メッセージが届いたときの処理
 def on_message(client, userdata, msg):
   # msg.topicにトピック名が，msg.payloadに届いたデータ本体が入っている
-  print("Received message '" + str(msg.payload) + "' on topic '" + msg.topic + "' with QoS " + str(msg.qos))
+  logger.info("Received message '" + str(msg.payload) + "' on topic '" + msg.topic + "' with QoS " + str(msg.qos))
   tokens = get_tokens()
   if ('refresh_token' in tokens):
     save_tokens(tokens)
@@ -69,17 +78,17 @@ def save_tokens(tokens):
   with open('tokens.json', 'wt') as f:
     json.dump(tokens, f)
   
-
 def call_api(tokens ,value):
     client = fitbit.Fitbit(CLIENT_ID, CLIENT_SECRET, tokens['access_token'], tokens['refresh_token'])
-    url = "{0}/{1}/user/-/foods/log/water.json".format(*client._get_common_args())
+    url = url = "{0}/{1}/user/-/foods/log/water.json".format(*client._get_common_args())
     data = {
         'amount' : value['water_weight'],
         'unit' : 'ml',
         'date' : datetime.now().strftime('%Y-%m-%d')
     }
-    client.make_request(url, data=data)
-
+    res = client.make_request(url, data=data)
+    logger.info(data)
+    logger.info(res)
 
 # MQTTの接続設定
 client = mqtt_client.Client()          # クラスのインスタンス(実体)の作成
