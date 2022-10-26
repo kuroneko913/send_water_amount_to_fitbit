@@ -1,2 +1,4 @@
-.DS_Store
+*.log
+nohup.out
 tokens.json
+config.py
